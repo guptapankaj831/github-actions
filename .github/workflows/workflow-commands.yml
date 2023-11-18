@@ -6,4 +6,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Setting an error Message
-              run: echo "::error::Missing Semicolon"
+              run: echo "::error::This is error message"
+            - name: Setting an debug Message
+              run: echo "::debug::This is debug message"
+            - name: Setting an warning Message
+              run: echo "::warning::This is warning message"
+            - name: Setting an notice Message
+              run: echo "::notice::This is notice message"
