@@ -13,3 +13,12 @@ jobs:
               run: echo "::warning::This is warning message"
             - name: Setting an notice Message
               run: echo "::notice::This is notice message"
+            - name: Group of logs
+              run: |
+                 echo "::group::My group title"
+                 echo "Inside group"
+                 echo "::endgroup::"
+            - name: Masking a Value
+              run: echo "::add-mask::Secret String"
+            - name: Echo a Secret
+              run: echo "Secret String"
