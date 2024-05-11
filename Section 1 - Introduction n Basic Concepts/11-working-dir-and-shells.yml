@@ -1,0 +1,40 @@
+name: Working Dirs and Shells
+on: [push]
+defaults:   # Workflow Level
+    run:
+        shell: bash     # Change Shell
+        # working-directory: /tmp/  # Change Working Dir.
+jobs:
+    display-wd-info:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Display working Dir and List files
+              run: |
+                pwd
+                ls -a
+                echo $GITHUB_SHA
+                echo $GITHUB_REPOSITORY
+                echo $GITHUB_WORKSPACE
+            - name: Change Working Dir # Step Level
+              working-directory: /home/runner
+              run: pwd
+
+    display-wd-info-windows:
+        runs-on: windows-latest
+        # By Default windows uses powershell. But we can change using below.
+        defaults:   # Job Level
+            run:
+                shell: pwsh # Change Shell.
+        steps:
+            - name: Display working Dir and List files
+              run: |
+                Get-Location
+                dir
+                echo $env:GITHUB_SHA
+                echo $env:GITHUB_REPOSITORY
+                echo $env:GITHUB_WORKSPACE
+            - name: Python Shell
+              shell: python     # Step Level Change shell
+              run: |
+                import platform
+                print(platform.processor())
