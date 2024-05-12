@@ -9,7 +9,7 @@ jobs:
       matrix:
         node-version: [14, 15, 16]
     steps:
-      # Below step will execute n times based on total no of values available in matrix variable 'node-version'
+      # Below step will execute n times Job based on total no of values available in matrix variable 'node-version'
       - run: node -v
       - uses: actions/setup-node@v3
         with:

@@ -1,4 +1,5 @@
 # timeout-minutes: 1 - Give timeout to execute an step in minute. This can be used in Job Level also.
+# Default value for 'timeout-minutes' is 360 minute.
 # continue-on-error: true - Prevent the entire job failing, if current step fail
 
 name: Status Check Function
@@ -6,6 +7,8 @@ on: [push]
 jobs:
   job-1:
     runs-on: ubuntu-latest
+    # Job Level timeout
+    # timeout-minutes: 1
     steps:
       - name: Step 1
         run: sleep 90
