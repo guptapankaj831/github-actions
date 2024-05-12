@@ -1,0 +1,30 @@
+name: Expressions & Contexts
+on: [push, pull_request]    # We can have issues, workflow and many more.
+# run-name help us to customize action title
+run-name: "Expressions & Contexts by @${{ github.actor}}, event: ${{github.event_name}}"
+jobs:
+    using-expressions-and-contexts:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Expressions
+                id: expressions
+                # ${{}} this is a expression. This can contain literal and constant value like below.
+                run: |
+                    echo ${{ 1 }}
+                    echo ${{ 'this is a string' }}
+                    echo ${{ null }}
+                    echo ${{ true }}
+                    echo ${{ 1 > 2 }}
+                    echo ${{ 'string' == 'String' }}
+                    echo ${{ true && false }}
+                    echo ${{ true || (false && true) }}
+            -   name: Dump Contexts
+                # Expressions can have functions which we can call. toJson() is a function, to display JSON in logs in a formated way.
+                # Passed values are context objects.
+                # 'github' context contains info about repo, events that trigger workflow, workflow.
+                run: |
+                    echo '${{ toJson(github) }}'
+                    echo '${{ toJson(job) }}'
+                    echo '${{ toJson(secrets) }}'
+                    echo '${{ toJson(steps) }}'
+                    echo '${{ toJson(runner) }}'
