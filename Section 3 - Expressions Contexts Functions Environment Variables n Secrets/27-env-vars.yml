@@ -1,10 +1,11 @@
 # We have Default and Custom Environment Variables
 # We can define Custom ENV in workflow, job, step level.
+
 name: Environment Variable
 on: [push]
 
 env:
-  WF_LEVEL_ENV: Available to all jobs
+  WF_LEVEL_ENV: Available to all jobs of current workflow. You can't use in another workflow.
 jobs:
   env-vars-and-context:
     runs-on: ubuntu-latest
