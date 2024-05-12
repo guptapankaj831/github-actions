@@ -1,14 +1,30 @@
 # We have Default and Custom Environment Variables
+# We can define Custom ENV in workflow, job, step level.
 name: Environment Variable
 on: [push]
 
+env:
+  WF_LEVEL_ENV: Available to all jobs
 jobs:
   env-vars-and-context:
     runs-on: ubuntu-latest
+    env:
+      JOB_LEVEL_ENV: Available to all steps in 'env-vars-and-context' job
     steps:
       - name: Log ENV VAR
         # Below will be evaluate on runner machine, as this is ENV variable.
+        # We should avoid using ENV variable in 'if' condition.
         run: echo $GITHUB_REF
       - name: Log Context VAR
         # Below will be evaluated by github action before sending workflow to runner machine.
+        # We can use Context variable in 'if' condition.
         run: echo '${{ github.ref }}'
+      - name: Log Custom ENV Vars
+        env:
+          STEP_LEVEL_ENV: Available to only this step
+          WF_LEVEL_ENV: Overridden WF Level ENV in step level
+        run: |
+          echo '${{ env.STEP_LEVEL_ENV }}'  # Used as Context, evaluated by github action, not by runner machine
+          echo $STEP_LEVEL_ENV  # used as ENV, evaluated by runner machine
+          echo $WF_LEVEL_ENV
+          echo $JOB_LEVEL_ENV
