@@ -1,30 +1,24 @@
-# We have Default and Custom Environment Variables
-# We can define Custom ENV in workflow, job, step level.
-name: Environment Variable
-on: [push]
+# We can dynamically define environment variables by writing to specific file into runner machine.
+# During the execution of workflow, runner machine generates some temp files.
+# Those temp files can be used to perform certain actions. Like: Define ENV Variable
+# GITHUB_ENV is default variable. which contain path to certain temp file, where we can write new ENV VAR
 
+name: Set Dynamic ENV Vars
+on: [push]
 env:
-  WF_LEVEL_ENV: Available to all jobs
+  STATIC_ENV_VAR: Job Level but Static ENV
 jobs:
-  env-vars-and-context:
+  dynamic-env-vars:
     runs-on: ubuntu-latest
-    env:
-      JOB_LEVEL_ENV: Available to all steps in 'env-vars-and-context' job
     steps:
-      - name: Log ENV VAR
-        # Below will be evaluate on runner machine, as this is ENV variable.
-        # We should avoid using ENV variable in 'if' condition.
-        run: echo $GITHUB_REF
-      - name: Log Context VAR
-        # Below will be evaluated by github action before sending workflow to runner machine.
-        # We can use Context variable in 'if' condition.
-        run: echo '${{ github.ref }}'
-      - name: Log Custom ENV Vars
-        env:
-          STEP_LEVEL_ENV: Available to only this step
-          WF_LEVEL_ENV: Overridden WF Level ENV in step level
+      - name: Set ENV Var
+        # Now All below ENV will be available to subsequent steps, but not for current step.
+        # We can override JOB Level ENV Variable.
         run: |
-          echo '${{ env.STEP_LEVEL_ENV }}'  # Used as Context, evaluated by github action, not by runner machine
-          echo $STEP_LEVEL_ENV  # used as ENV, evaluated by runner machine
-          echo $WF_LEVEL_ENV
-          echo $JOB_LEVEL_ENV
+          echo "NEW_ENV_VAR=$(date)" >> "$GITHUB_ENV"
+          echo "STATIC_ENV_VAR=$RANDOM" >> "$GITHUB_ENV"
+      
+      - name: Log ENV Var
+        run: |
+          echo $NEW_ENV_VAR
+          echo $STATIC_ENV_VAR
