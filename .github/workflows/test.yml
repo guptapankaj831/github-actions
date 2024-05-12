@@ -1,8 +1,20 @@
 name: If Key and Expression Function
 on: [push, issues, pull_request, workflow_dispatch]
 jobs:
-  # If key can be added in job level or step level
-  if-example:
+  # 'If' condition can be added in job level or step level
+  runs-on-issues-and-prs:
+    runs-on: ubuntu-latest
+    # Below both 'if' statement are valid. Different way of writing. This is Job Level condition.
+    # if: github.event_name == 'issues' || github.event_name == 'pull_request'
+    if: contains(fromJson('["issues", "pull_request"]'), github.event_name)
+    steps:
+      - name: Run only if issue has bug label
+        # Below is Step Level 'if' condition
+        if: contains(github.event.issue.labels.*.name, 'bug')
+        # Print All labels of issue.
+        run: echo ${{ join(github.event.issue.labels.*.name, ', ') }}
+
+  runs-on-push:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' # Main condition. Below steps will execute based on this condition.
     steps:
