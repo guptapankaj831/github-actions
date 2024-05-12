@@ -1,5 +1,9 @@
 # When you want to run a job multiple times with different variables, we use Matrix.
 
+# continue-on-error: true   Prevents a workflow run from failing when a job fails.
+# max-parallel: 3   By Default all job run parallel. But using this we can control max parallel job run
+# fail-fast: false  Setting fail-fast to false prevents Github from cancelling all in-progress jobs if any matrix job fails. Default is True
+
 name: Matrix
 on: [push]
 jobs:
@@ -20,10 +24,17 @@ jobs:
   # For each node version in ubuntu os
   # And For each node version in windows os
   two-d-node-matrix:
+    # Using below line, Prevents a workflow run from failing when a job fails.
+    # continue-on-error: true
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
         node-version: [14, 15, 16]
+      # By Default all job run parallel. But using below we can control max parallel job run
+      # Once any job finish, next job start automatically.
+      # max-parallel: 3
+
+      # fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
       - run: node -v
