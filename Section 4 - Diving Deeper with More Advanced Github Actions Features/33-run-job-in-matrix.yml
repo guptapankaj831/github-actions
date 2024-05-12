@@ -3,16 +3,31 @@
 name: Matrix
 on: [push]
 jobs:
-  node-matrix:
-    runs-on: ubuntu-latest
+  # 1d-node-matrix:
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       node-version: [14, 15, 16]
+  #   steps:
+  #     # Below step will execute n times Job based on total no of values available in matrix variable 'node-version'
+  #     - run: node -v
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #     - run: node -v
+
+  # Below job will be executed as per below
+  # For each node version in ubuntu os
+  # And For each node version in windows os
+  2d-node-matrix:
     strategy:
       matrix:
+        os: [ubuntu-latest, windows-latest]
         node-version: [14, 15, 16]
+    runs-on: ${{ matrix.os }}
     steps:
-      # Below step will execute n times Job based on total no of values available in matrix variable 'node-version'
       - run: node -v
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - run: node -v
-
