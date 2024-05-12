@@ -6,6 +6,8 @@ jobs:
     steps:
       - name: Step 1
         run: sleep 20
+      - name: Fail
+        run: exit 1
       - name: Runs on Failure
         # 'failure()' returns 'true' when any previous step of job fails.
         if: failure()
@@ -28,4 +30,3 @@ jobs:
     if: failure()
     steps:
       - run: echo 'Job 2'
-
