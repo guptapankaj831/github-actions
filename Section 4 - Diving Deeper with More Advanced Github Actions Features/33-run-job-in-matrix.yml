@@ -3,7 +3,7 @@
 name: Matrix
 on: [push]
 jobs:
-  # 1d-node-matrix:
+  # one-d-node-matrix:
   #   runs-on: ubuntu-latest
   #   strategy:
   #     matrix:
@@ -19,7 +19,7 @@ jobs:
   # Below job will be executed as per below
   # For each node version in ubuntu os
   # And For each node version in windows os
-  2d-node-matrix:
+  two-d-node-matrix:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
