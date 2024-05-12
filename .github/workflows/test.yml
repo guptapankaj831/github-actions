@@ -8,6 +8,7 @@ jobs:
   log-vars:
     # ${{ vars }} This OBJ will have all ORG/REPO/ENV Varialbes
     runs-on: ${{ vars.JOBS_RUNNER }}
+    environment: "production"
     env:
       # Make ORG/REPO/ENV level secrets as local env.
       BOOLEAN_SECRET: ${{ secrets.BOOLEAN_SECRET }}
