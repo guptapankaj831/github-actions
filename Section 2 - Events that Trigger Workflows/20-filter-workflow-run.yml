@@ -1,0 +1,28 @@
+# Filter our workflow Runs by Branches, Tags and Path
+
+# We can't use branches and branches-ignore together.
+# If we have multiple filter like branches, tags, paths, then workflow will run only when (branches && tag && paths)
+
+name: Filter wofkflow run
+on:
+  push:
+    # Will run workflow on push event of below branches.
+    branches:
+      - main
+      - "feature/*"  # matches feature/featA, feature/featB. Doesn't match feature/featA/featB.
+      - "feature/**"  # matches feature/featA, feature/featB, feature/featA/featB.
+      - "!feature/featA"  # Will ignore this branch.
+    # Will ignore these branches.
+    # branches-ignore:
+    #   - develop
+
+    # Will run workflow if we have below tags while push event
+    tags:
+      - v1.*  # match v1.1, v1.1.2
+      - "!v1.1.1.1" # Will not execute on this tag.
+
+    # Will run workflow if we push specific files which matches below path patterns.
+    paths:
+      - "**.js" # Will triggers only on any js file update
+      - "!app.js" # Will not trigger when app.js file is updated.
+
