@@ -1,9 +1,45 @@
 name: Manually Triggered
 on:
   workflow_dispatch:
+    # All below inputs are optional. We can use based on our requirement.
+    inputs:
+      string:
+        description: A String Input
+        type: string
+        required: true
+        default: "Default Value"
+      number:
+        description: A number Input
+        type: number
+        default: 4
+      option:
+        description: A options Input
+        required: true
+        type: choice
+        default: "Option 3"
+        options:
+          - Option 1
+          - Option 2
+          - Option 3
+      boolean:
+        description: A boolean Input
+        type: boolean
+        required: false
+      
+      # To use below input, make sure we can created ENV variable in our repo level.
+      environment:
+        description: "Environment"
+        type: environment
+        required: true
 
 jobs:
   log-info:
     runs-on: ubuntu-latest
     steps:
       - run: echo $GITHUB_REF
+      - run: |
+          echo "String: ${{ inputs.string }}"
+          echo "Number: ${{ inputs.number }}"
+          echo "Option: ${{ inputs.option }}"
+          echo "Boolean: ${{ inputs.boolean }}"
+          echo "Environment: ${{ inputs.environment }}"
