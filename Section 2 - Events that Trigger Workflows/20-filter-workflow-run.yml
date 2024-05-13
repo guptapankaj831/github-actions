@@ -1,4 +1,4 @@
-# Filter our workflow Runs by Branches, Tags and Path
+# Filter out workflow Runs by Branches, Tags and Path
 
 # We can't use branches and branches-ignore together.
 # If we have multiple filter like branches, tags, paths, then workflow will run only when (branches && tag && paths)
