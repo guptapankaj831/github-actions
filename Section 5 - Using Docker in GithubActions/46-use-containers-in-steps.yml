@@ -1,0 +1,36 @@
+
+name: Use Containers in Steps
+on: [workflow_dispatch]
+
+# Job level and step level containers are run in host machine as siblings.
+# They will share same network, same volumne.
+
+jobs:
+  docker-job:
+    runs-on: ubuntu-latest
+    container:
+      # This is job level image. For all steps of this job will use this image.
+      image: node:20.3-alpine3.17
+      env:
+        API_URL: some-url.com
+      ports:
+        - 80
+    steps:
+      # Below 2 steps will be run inside node:20.3-alpine3.17 container.
+      - name: Log Node & OS Versions
+        run: | 
+          node -v
+          cat /etc/os-release
+      - name: Log ENV
+        run: echo $API_URL
+      # Below step will execute in node:18.16-alpine3.17 container.
+      - name: Container in a step
+        uses: docker://node:18.16-alpine3.17
+        # If our image has entrypoint, then no need to of below 'with' statement.
+        with:
+          entrypoint: /usr/local/bin/node # Path of node.
+      # Below step will execute in node:18.16-alpine3.17 container.
+      - name: Log node version
+        uses: docker://node:18.16-alpine3.17
+        with:
+          args: -v

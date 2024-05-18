@@ -1,0 +1,20 @@
+name: Custom Docker Entrypoint
+on: [workflow_dispatch]
+
+jobs:
+  docker-job:
+    runs-on: ubuntu-latest
+    container:
+      image: node:20.3-alpine3.17
+      env:
+        API_URL: some-url.com
+      ports:
+        - 80
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Bash Script
+        uses: docker://node:18.16-alpine3.17
+        with:
+          # This is Custom Docker Entrypoint. Make sure this file is executable file.
+          entrypoint: ./custom_entrypoint_script.sh
+          args: "Some Script"
