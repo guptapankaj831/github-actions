@@ -1,45 +1,32 @@
-name: Manually Triggered
-on:
-  workflow_dispatch:
-    # All below inputs are optional. We can use based on our requirement.
-    inputs:
-      string:
-        description: A String Input
-        type: string
-        required: true
-        default: "Default Value"
-      number:
-        description: A number Input
-        type: number
-        default: 4
-      option:
-        description: A options Input
-        required: true
-        type: choice
-        default: "Option 3"
-        options:
-          - Option 1
-          - Option 2
-          - Option 3
-      boolean:
-        description: A boolean Input
-        type: boolean
-        required: false
-      
-      # To use below input, make sure we can created ENV variable in our repo level.
-      environment:
-        description: "Environment"
-        type: environment
-        required: true
+name: Docker
+on: [workflow_dispatch]
 
 jobs:
-  log-info:
+  docker-job:
     runs-on: ubuntu-latest
+    # container: node:20.3-alpine3.17   # Below is another approach to write.
+    container:
+      image: node:20.3-alpine3.17
+      # If image is private, then we can add 'credentials'.
+      # credentials:
+      #   username: <username>
+      #   password: <password>
+      env:
+        API_URL: some-url.com
+      ports:
+        - 80
+      # volumes:
+      #   - vol_name: /path/in/container  # This is named volume.
+      #   - /path/in/container  # This is path of anyonmous volume
+      #   - /path/in/host:/path/in/container # This is bind volume
+
+      # Any options which we want to pass to docker run command.
+      # options: --cpus 1
     steps:
-      - run: echo $GITHUB_REF
-      - run: |
-          echo "String: ${{ inputs.string }}"
-          echo "Number: ${{ inputs.number }}"
-          echo "Option: ${{ inputs.option }}"
-          echo "Boolean: ${{ inputs.boolean }}"
-          echo "Environment: ${{ inputs.environment }}"
+      # All below steps will be run inside container.
+      - name: Log Node & OS Versions
+        run: | 
+          node -v
+          cat /etc/os-release
+      - name: Log ENV
+        run: echo $API_URL
