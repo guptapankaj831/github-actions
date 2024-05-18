@@ -6,6 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     # container: node:20.3-alpine3.17   # Below is another approach to write.
     container:
+      # This is job level image. For all steps of this job will use this image.
       image: node:20.3-alpine3.17
       # If image is private, then we can add 'credentials'.
       # credentials:
