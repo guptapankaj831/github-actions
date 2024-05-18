@@ -1,0 +1,32 @@
+name: Docker
+on: [workflow_dispatch]
+
+jobs:
+  docker-job:
+    runs-on: ubuntu-latest
+    # container: node:20.3-alpine3.17   # Below is another approach to write.
+    container:
+      image: node:20.3-alpine3.17
+      # If image is private, then we can add 'credentials'.
+      # credentials:
+      #   username: <username>
+      #   password: <password>
+      env:
+        API_URL: some-url.com
+      ports:
+        - 80
+      # volumes:
+      #   - vol_name: /path/in/container  # This is named volume.
+      #   - /path/in/container  # This is path of anyonmous volume
+      #   - /path/in/host:/path/in/container # This is bind volume
+
+      # Any options which we want to pass to docker run command.
+      # options: --cpus 1
+    steps:
+      # All below steps will be run inside container.
+      - name: Log Node & OS Versions
+        run: | 
+          node -v
+          cat /etc/os-release
+      - name: Log ENV
+        run: echo $API_URL
