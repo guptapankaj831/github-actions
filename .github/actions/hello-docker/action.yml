@@ -1,0 +1,22 @@
+name: Hello World
+author: Pankaj
+description: "Greet Someone and record the time"
+inputs:
+  who_to_greet:
+    description: "Who to greet"
+    default: "World"
+outputs:
+  time:
+    description: "The time of greeting"
+
+runs:
+  using: "docker"
+  # image: 'docker://node:18.16-alpine3.17' # Any image from docker hub
+  image: 'Dockerfile' # Locally Dockerfile
+  # entrypoint: # We can use this to override entrypoint
+  args:
+    - ${{ inputs.who_to_greet }}
+  env:
+    HELLO: WORLD
+  post-entrypoint: "/cleanup.sh"
+  post-if: runner.os == 'linux'
